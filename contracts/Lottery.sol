@@ -4,7 +4,8 @@ pragma solidity ^0.8.24;
 contract Lottery {
     address public manager;
     address payable[] public participants;
-    mapping(address => uint) public participantContributions; // Track contributions
+    mapping(address => uint) public totalParticipantContributions; // Track contributions
+    mapping(address => uint) public currentParticipantContributions;
     uint public participationFee;
 
     event EnteredLottery(address participant, uint amount);
@@ -29,7 +30,8 @@ contract Lottery {
 
     function enterLottery() external payable minEthSent {
         participants.push(payable(msg.sender));
-        participantContributions[msg.sender] = msg.value; // Track contribution
+        totalParticipantContributions[msg.sender] += msg.value; // Track contribution
+        currentParticipantContributions[msg.sender] = msg.value;
         emit EnteredLottery(msg.sender, msg.value);
     }
 
@@ -50,6 +52,7 @@ contract Lottery {
             winners[i].transfer(amounts[i]);
 
             // Remove winner from participants to avoid being selected again
+            delete currentParticipantContributions[participants[index]];
             participants[index] = participants[participants.length - 1];
             participants.pop();
         }
@@ -57,14 +60,17 @@ contract Lottery {
         emit WinnersPicked([address(winners[0]), address(winners[1]), address(winners[2])], amounts);
 
         // Resetting the lottery for the next round
+        for (uint i = 0; i < participants.length; i++){
+            currentParticipantContributions[participants[i]] = 0;
+        }
         delete participants;
     }
 
     function withdrawFromLottery() public {
-        require(participantContributions[msg.sender] > 0, "Not a participant or no funds to withdraw.");
+        require(currentParticipantContributions[msg.sender] > 0, "Not a participant or no funds to withdraw.");
 
         // Calculate 90% of the participant's contribution
-        uint refundAmount = (participantContributions[msg.sender] * 90) / 100;
+        uint refundAmount = (currentParticipantContributions[msg.sender] * 90) / 100;
         payable(msg.sender).transfer(refundAmount);
 
         // Remove the participant from the array and their contribution record
@@ -75,7 +81,7 @@ contract Lottery {
                 break;
             }
         }
-        participantContributions[msg.sender] = 0; // Reset their contribution record
+        currentParticipantContributions[msg.sender] = 0; // Reset their contribution record
 
         emit ParticipantWithdrawn(msg.sender, refundAmount);
     }
@@ -84,3 +90,4 @@ contract Lottery {
         return uint(keccak256(abi.encodePacked(block.prevrandao, block.timestamp, participants.length)));
     }
 }
+
