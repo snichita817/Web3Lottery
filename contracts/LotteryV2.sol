@@ -3,7 +3,7 @@ pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
-contract Lottery is Initializable{
+contract LotteryV2 is Initializable{
     address public manager;
     address payable[] public participants;
     mapping(address => uint) public totalParticipantContributions; // Track contributions
@@ -36,7 +36,12 @@ contract Lottery is Initializable{
         _;
     }
 
-    function enterLottery() external payable minEthSent {
+    modifier participantNotExists(address participant){
+        require (!verifyIfExists(participants, participant), "Participant already exists");
+        _;
+    }
+
+    function enterLottery() external payable minEthSent participantNotExists(msg.sender) {
         participants.push(payable(msg.sender));
         totalParticipantContributions[msg.sender] += msg.value; // Track contribution
         currentParticipantContributions[msg.sender] = msg.value;
@@ -96,6 +101,18 @@ contract Lottery is Initializable{
 
     function random() private view returns (uint) {
         return uint(keccak256(abi.encodePacked(block.prevrandao, block.timestamp, participants.length)));
+    }
+
+    function verifyIfExists(address payable[] memory adresses, address adress) internal pure returns (bool){
+        adress = payable(adress);
+        bool exists = false;
+        for (uint i = 0; i < adresses.length; ++i){
+            if (adresses[i] == adress){
+                exists = true;
+                break;
+            }
+        }
+        return exists;
     }
 }
 
