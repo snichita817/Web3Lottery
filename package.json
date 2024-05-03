@@ -17,6 +17,8 @@
     "hardhat": "^2.22.2"
   },
   "dependencies": {
+    "@chainlink/contracts": "^1.1.0",
+    "@chainlink/hardhat-chainlink": "^0.0.4",
     "@openzeppelin/contracts-upgradeable": "^5.0.2",
     "@openzeppelin/hardhat-upgrades": "^3.0.5",
     "dotenv": "^16.4.5"

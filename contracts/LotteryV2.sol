@@ -2,6 +2,7 @@
 pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 
 contract LotteryV2 is Initializable{
     address public manager;
@@ -9,6 +10,7 @@ contract LotteryV2 is Initializable{
     mapping(address => uint) public totalParticipantContributions; // Track contributions
     mapping(address => uint) public currentParticipantContributions;
     uint public participationFee;
+    string internal lotteryLog;
 
     event EnteredLottery(address participant, uint amount);
     event WinnersPicked(address[3] winners, uint[3] amounts);
@@ -21,7 +23,8 @@ contract LotteryV2 is Initializable{
     // }
     function initialize(uint _participationFee) public initializer{
         manager = msg.sender;
-        participationFee = _participationFee;
+        //Now in USD
+        participationFee = _participationFee * 1e18;
     }
 
 
@@ -31,8 +34,8 @@ contract LotteryV2 is Initializable{
         _;
     }
 
-    modifier minEthSent() {
-        require(msg.value >= participationFee, "Minimum ETH not sent.");
+    modifier minUSDSent() {
+        require(convertEthToUSD(msg.value) >= participationFee, "Minimum Eth not sent.");
         _;
     }
 
@@ -41,7 +44,7 @@ contract LotteryV2 is Initializable{
         _;
     }
 
-    function enterLottery() external payable minEthSent participantNotExists(msg.sender) {
+    function enterLottery() external payable minUSDSent participantNotExists(msg.sender) {
         participants.push(payable(msg.sender));
         totalParticipantContributions[msg.sender] += msg.value; // Track contribution
         currentParticipantContributions[msg.sender] = msg.value;
@@ -114,5 +117,22 @@ contract LotteryV2 is Initializable{
         }
         return exists;
     }
+
+    function getPrice() public view returns(uint256){
+        AggregatorV3Interface priceFeed = AggregatorV3Interface(0x694AA1769357215DE4FAC081bf1f309aDC325306);
+        (, int256 price,,,) = priceFeed.latestRoundData();
+        //console.log(priceFeed.decimals());
+        //console.log(price);
+        return uint256(price * 1e10);
+    }
+
+    function convertEthToUSD(uint256 ethAmount) public view returns (uint256){
+        uint ethPrice = getPrice();
+        uint convertedAmount = (ethPrice * ethAmount) / 1e18;
+        return convertedAmount;
+
+    }
+
+
 }
 

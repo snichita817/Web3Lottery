@@ -14,8 +14,8 @@ async function main() {
     const lottery = await upgrades.deployProxy(Lottery, [participationFee], { initializer: 'initialize' });
     
     console.log("Address of Proxy contract:", lottery.target);
-    console.log("Address of Implementation contract (actual Loterry): ", await upgrades.erc1967.getImplementationAddress(lottery.target));
-    console.log("Address of ProxyAdmin contract: ", await upgrades.erc1967.getAdminAddress(lottery.target));
+    // console.log("Address of Implementation contract (actual Loterry): ", await lottery.implementation.target);
+    // console.log("Address of ProxyAdmin contract: ", await upgrades.erc1967.getAdminAddress(lottery.target));
 
     fs.writeFileSync("ProxyContractAddress.txt", (lottery.target).toString(), (err) =>{
       if (err) throw err;

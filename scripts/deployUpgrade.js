@@ -5,7 +5,7 @@ async function main() {
     const [deployer] = await ethers.getSigners();
     const participationFee = 10;
 
-    const proxyAddress = fs.readFileSync("ProxyContractAddress.txt", 'utf8')
+    const proxyAddress = fs.readFileSync("ProxyContractAddress.txt", 'utf8');
     console.log(proxyAddress);
 
     console.log("Deploying contracts with the account:", deployer.address);
@@ -14,8 +14,8 @@ async function main() {
     const lottery = await upgrades.upgradeProxy(proxyAddress, LotteryV2);
     
     console.log("Address of Proxy contract:", lottery.target);
-    console.log("Address of Implementation contract (actual Loterry): ", await upgrades.erc1967.getImplementationAddress(lottery.target));
-    console.log("Address of ProxyAdmin contract: ", await upgrades.erc1967.getAdminAddress(lottery.target));
+    //console.log("Address of Implementation contract (actual Loterry): ", await upgrades.erc1967.getImplementationAddress(lottery.target));
+    //console.log("Address of ProxyAdmin contract: ", await upgrades.erc1967.getAdminAddress(lottery.target));
 
     
   }

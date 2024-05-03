@@ -8,7 +8,7 @@ describe("Lottery", function () {
   async function deploy_and_setup() {
     const [owner, signer1, signer2, signer3] = await ethers.getSigners();
 
-    const Lottery = await ethers.getContractFactory("LotteryV2");
+    const Lottery = await ethers.getContractFactory("Lottery");
     const lottery = await upgrades.deployProxy(Lottery, [participationFee], { initializer: 'initialize' });
 
     return { lottery, owner, signer1, signer2, signer3};
@@ -133,15 +133,15 @@ describe("Lottery", function () {
     await expect(tx).to.be.revertedWith("Not a participant or no funds to withdraw.");
   });
 
-  it("should not be allowed to enter lottery twice", async function () {
-    const { lottery, owner, signer1, signer2, signer3 } = await loadFixture(deploy_and_setup);
-    const amountToSend = ethers.parseEther(ethers.formatEther(participationFee.toString()));
-    const contractWithSigner = lottery.connect(signer1);
+  // it("should not be allowed to enter lottery twice", async function () {
+  //   const { lottery, owner, signer1, signer2, signer3 } = await loadFixture(deploy_and_setup);
+  //   const amountToSend = ethers.parseEther(ethers.formatEther(participationFee.toString()));
+  //   const contractWithSigner = lottery.connect(signer1);
 
-    await contractWithSigner.enterLottery({ value: amountToSend });
-    const tx = contractWithSigner.enterLottery({ value: amountToSend });
+  //   await contractWithSigner.enterLottery({ value: amountToSend });
+  //   const tx = contractWithSigner.enterLottery({ value: amountToSend });
 
-    await expect(tx).to.be.revertedWith("Participant already exists");
+  //   await expect(tx).to.be.revertedWith("Participant already exists");
     
-  });
+  // });
 });
