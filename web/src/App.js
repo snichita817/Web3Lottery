@@ -4,9 +4,9 @@ import './App.css';
 import contractABI from './LotteryContractABI.json';
 const { ethers } = require("ethers");
 
-const contractAddress = '0x23fd4f984715FdA04d41bAa49743FAD89e4a8088'; // Sepolia
-
 function App() {
+  const [contractAddress, setContractAddress] = useState('');
+
   const [provider, setProvider] = useState(null);
   const [signer, setSigner] = useState(null);
   const [contract, setContract] = useState(null);
@@ -33,6 +33,15 @@ function App() {
         clearTimeout(messageTimeoutRef.current);
       }
     };
+  }, []);
+
+  useEffect(() => {
+    fetch('/ProxyContractAddress.txt')
+      .then(response => response.text())
+      .then(address => {
+        setContractAddress(address.trim());
+      })
+      .catch(error => console.error('Failed to load contract address:', error));
   }, []);
 
   const showMessage = (msg, isError = false) => {

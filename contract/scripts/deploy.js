@@ -20,6 +20,10 @@ async function main() {
     fs.writeFileSync("ProxyContractAddress.txt", (lottery.target).toString(), (err) =>{
       if (err) throw err;
     });
+
+    fs.writeFileSync("./../web/public/ProxyContractAddress.txt", (lottery.target).toString(), (err) =>{
+      if (err) throw err;
+    });
   }
   
 main()
