@@ -35,6 +35,7 @@ These commands will set up private keys used by the Hardhat environment. Replace
 Start the Hardhat local node:
 
 ```bash
+cd contract
 npx hardhat node
 ```
 
@@ -51,7 +52,7 @@ Install `create-react-app` globally and create a new React application:
 
 ```bash
 npm install -g create-react-app
-cd web
+cd ../web
 ```
 
 Install the `ethers` library to interact with Ethereum:
