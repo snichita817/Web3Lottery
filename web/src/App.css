@@ -71,3 +71,28 @@ button:disabled:hover + .disabled-tooltip {
   align-items: center;
   margin-bottom: 10px;
 }
+
+.message {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  width: 80%;
+  max-width: 600px;
+  background-color: #323842;
+  color: #c0b283; 
+}
+
+.error-message {
+  color: #ff4d4d; 
+  background-color: #441111; 
+}
+
+.success-message {
+  color: #adff2f;
+  background-color: #114411; 
+}
+

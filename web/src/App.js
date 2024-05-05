@@ -144,6 +144,11 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+        {message && (
+          <div className={`message ${isError ? 'error-message' : 'success-message'}`}>
+            {message}
+          </div>
+        )}
         <img src={logo} className="App-logo" alt="logo" />
         <h2>In piggy bank: {piggyBank} ETH</h2>
         {isConnected && <p>Your Contributions: {currentUserContributions} ETH</p>}
@@ -177,12 +182,6 @@ function App() {
         {isConnected && (
           <div className='connected'>
             <Participants contractAddress={contractAddress} contractABI={contractABI} />
-          </div>
-        )}
-
-        {message && (
-          <div style={{ color: isError ? 'red' : 'green', marginTop: '20px' }}>
-            {message}
           </div>
         )}
       </header>
