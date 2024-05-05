@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import logo from './lotto-logo.jpg';
 import './App.css';
 import contractABI from './LotteryContractABI.json';
+import Participants from './Participants';
+
 const { ethers } = require("ethers");
 
 function App() {
@@ -169,6 +171,12 @@ function App() {
         {isConnected && (
           <div className='connected'>
             <button onClick={pickWinnerHandler}>Pick your winner!</button>
+          </div>
+        )}
+
+        {isConnected && (
+          <div className='connected'>
+            <Participants contractAddress={contractAddress} contractABI={contractABI} />
           </div>
         )}
 

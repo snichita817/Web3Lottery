@@ -152,7 +152,7 @@
 	},
 	{
 		"inputs": [],
-		"name": "getPrice",
+		"name": "getParticipantCount",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -165,15 +165,15 @@
 	},
 	{
 		"inputs": [],
-		"name": "hello",
+		"name": "getPrice",
 		"outputs": [
 			{
-				"internalType": "string",
+				"internalType": "uint256",
 				"name": "",
-				"type": "string"
+				"type": "uint256"
 			}
 		],
-		"stateMutability": "pure",
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{

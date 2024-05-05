@@ -75,6 +75,11 @@
       "address": "0x1EdD8A3489dd1c26BFad30Bc1c9E3D3E825001Ca",
       "txHash": "0xd5dfb7ad55121d9e133e21611ca702f8a406307bc148c1d395810f1cf3c1fa6c",
       "kind": "transparent"
+    },
+    {
+      "address": "0x89cBf3f3B4DB2DcF5408C8c3bADA9c8C608Dd5cA",
+      "txHash": "0xdb972cfe700e970d5a4f6b74b4dde3d7781e6c5b8fee922c8c3608d6fae1321b",
+      "kind": "transparent"
     }
   ],
   "impls": {
@@ -787,6 +792,135 @@
           },
           "t_mapping(t_address,t_uint256)": {
             "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "b93728f8e116e89022c61f2fedaaaf97bc9f4c373775b1d64f6d0974e84d540e": {
+      "address": "0x3702282647DEBD887fa8958E61E48Df0AfdBBfa0",
+      "txHash": "0x4b042c2c97747c0d3505343ba55980a6d1eaebf5d55a402056f279a961729955",
+      "layout": {
+        "solcVersion": "0.8.24",
+        "storage": [
+          {
+            "label": "manager",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "LotteryV2",
+            "src": "contracts\\LotteryV2.sol:8"
+          },
+          {
+            "label": "participants",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_address_payable)dyn_storage",
+            "contract": "LotteryV2",
+            "src": "contracts\\LotteryV2.sol:9"
+          },
+          {
+            "label": "totalParticipantContributions",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "LotteryV2",
+            "src": "contracts\\LotteryV2.sol:10"
+          },
+          {
+            "label": "currentParticipantContributions",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "LotteryV2",
+            "src": "contracts\\LotteryV2.sol:11"
+          },
+          {
+            "label": "participationFee",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_uint256",
+            "contract": "LotteryV2",
+            "src": "contracts\\LotteryV2.sol:12"
+          },
+          {
+            "label": "lotteryLog",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_string_storage",
+            "contract": "LotteryV2",
+            "src": "contracts\\LotteryV2.sol:13"
+          }
+        ],
+        "types": {
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)23_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_address_payable": {
+            "label": "address payable",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_address_payable)dyn_storage": {
+            "label": "address payable[]",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_string_storage": {
+            "label": "string",
             "numberOfBytes": "32"
           },
           "t_uint256": {

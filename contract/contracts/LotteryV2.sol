@@ -27,17 +27,9 @@ contract LotteryV2 is Initializable{
         participationFee = _participationFee * 1e18;
     }
 
-    function hello() external pure returns (string memory) {
-        return "Hello, welcome to the Lottery!";
-    }
-
     modifier onlyManager() {
         require(msg.sender == manager, "Only the manager can call this.");
         _;
-    }
-
-    function getBalance() public view returns (uint) {
-        return address(this).balance;
     }
 
     modifier minUSDSent() {
@@ -48,6 +40,14 @@ contract LotteryV2 is Initializable{
     modifier participantNotExists(address participant){
         require (!verifyIfExists(participants, participant), "Participant already exists");
         _;
+    }
+
+    function getBalance() public view returns (uint) {
+        return address(this).balance;
+    }
+
+    function getParticipantCount() public view returns (uint) {
+        return participants.length;
     }
 
     function enterLottery() external payable minUSDSent participantNotExists(msg.sender) {
@@ -150,4 +150,3 @@ contract LotteryV2 is Initializable{
     }
 
 }
-
