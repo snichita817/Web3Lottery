@@ -20,6 +20,7 @@ function App() {
 
   const [message, setMessage] = useState('');
   const [isError, setIsError] = useState(false);
+  const [events, setEvents] = useState([]);
   const messageTimeoutRef = useRef(null);
 
   useEffect(() => {
@@ -36,6 +37,36 @@ function App() {
       }
     };
   }, []);
+  
+  useEffect(() => {
+    const subscribeToEvents = async () => {
+      if (contract) {
+        contract.on('EnteredLottery', (participant, amount) => {
+          setEvents((prevEvents) => {
+            if ({name: "EnteredLottery", participant, amount } != prevEvents[prevEvents.length-1])
+               return [...prevEvents, {name: "EnteredLottery", participant, amount }]});
+        });
+        contract.on('WinnersPicked', (winners, amounts) => {
+          setEvents((prevEvents) => {
+            if ({name: "WinnersPicked", winners, amounts } != prevEvents[prevEvents.length-1])
+              return [...prevEvents, {name: "WinnersPicked", winners, amounts }]});
+        });
+        contract.on('ParticipantWithdrawn', (participant, refundAmount) => {
+          setEvents((prevEvents) => {
+            if ({name: "ParticipantWithdrawn", participant, refundAmount } != prevEvents[prevEvents.length-1])
+              return [...prevEvents, {name: "ParticipantWithdrawn", participant, refundAmount }]});
+        });
+      }
+    };
+
+    subscribeToEvents();
+
+    return () => {
+      if (contract) {
+        contract.removeAllListeners();
+      }
+    };
+  }, [contract]);
 
   useEffect(() => {
     fetch('/ProxyContractAddress.txt')
@@ -45,6 +76,8 @@ function App() {
       })
       .catch(error => console.error('Failed to load contract address:', error));
   }, []);
+
+
 
   const showMessage = (msg, isError = false) => {
     setMessage(msg);
@@ -105,6 +138,11 @@ function App() {
       const tx = await contract.enterLottery({ value: weiAmount });
       await tx.wait();
 
+      const gasLimit = await provider.estimateGas(tx.data);
+      const gasPrice = await provider.getGasPrice();
+
+      const txResponse = contract.contract.enterLottery({ value: weiAmount }, {gasPrice, gasLimit})
+
       const userAddress = await signer.getAddress();
       fetchContributions(userAddress);
       showMessage("Entered the lottery successfully!");
@@ -119,6 +157,12 @@ function App() {
     try {
       const tx = await contract.withdrawFromLottery();
       await tx.wait();
+
+      const gasLimit = await provider.estimateGas(tx.data);
+      const gasPrice = await provider.getGasPrice();
+
+      const txResponse = contract.contract.withdrawFromLottery({gasPrice, gasLimit})
+
       fetchContributions(userAddress);
       showMessage('Withdrawal successful!');
     } catch (error) {
@@ -132,6 +176,12 @@ function App() {
     try {
       const tx = await contract.pickWinner();
       await tx.wait();
+
+      const gasLimit = await provider.estimateGas(tx.data);
+      const gasPrice = await provider.getGasPrice();
+
+      const txResponse = contract.contract.pickWinner({gasPrice, gasLimit})
+      
       fetchContributions(userAddress);
       showMessage('Rewards have been granted!');
     } catch (error) {
@@ -182,6 +232,36 @@ function App() {
         {isConnected && (
           <div className='connected'>
             <Participants contractAddress={contractAddress} contractABI={contractABI} />
+          </div>
+        )}
+
+        {isConnected && (
+          <div className='connected'>
+            <ul>
+              {events.map((event, index) => (
+              <li key={index}>
+                {event.name == "EnteredLottery" && (
+                  <div><h2>A new player has appeared!</h2>
+                  <p>-------{event.participant}-------</p>
+                  <p>with a balance of {ethers.formatEther(event.amount)}</p>
+                  </div>
+                )}
+                {event.name == "WinnersPicked" && (
+                  <div><h2>The winners have been picked!</h2>
+                  <p>First Prize: {event.winners[0]} - {ethers.formatEther(event.amounts[0])} eth</p>
+                  <p>Second Prize: {event.winners[1]} - {ethers.formatEther(event.amounts[1])} eth</p>
+                  <p>Third Prize: {event.winners[2]} - {ethers.formatEther(event.amounts[2])} eth</p>
+                  </div>
+                )}
+                {event.name == "ParticipantWithdrawn" && (
+                  <div><h2>A participant has withdrawn their funds!</h2>
+                  <p>-------{event.participant}-------</p>
+                  <p>Withdrew an amount of {ethers.formatEther(event.refundAmount)}</p>
+                  </div>
+                )}
+              </li>
+              ))}
+            </ul>
           </div>
         )}
       </header>

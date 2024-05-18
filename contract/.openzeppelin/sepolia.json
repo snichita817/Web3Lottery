@@ -80,6 +80,11 @@
       "address": "0x89cBf3f3B4DB2DcF5408C8c3bADA9c8C608Dd5cA",
       "txHash": "0xdb972cfe700e970d5a4f6b74b4dde3d7781e6c5b8fee922c8c3608d6fae1321b",
       "kind": "transparent"
+    },
+    {
+      "address": "0x3795Dc322620d63e311a2c43220894293e345382",
+      "txHash": "0x50a16d6f295d26b467b7985f16e8d4f9cb82a383d4cc8f4ae72e1c9e1edbc5d1",
+      "kind": "transparent"
     }
   ],
   "impls": {
@@ -716,7 +721,7 @@
             "slot": "0",
             "type": "t_address",
             "contract": "Lottery",
-            "src": "contracts\\Lottery.sol:7"
+            "src": "contracts/Lottery.sol:7"
           },
           {
             "label": "participants",
@@ -724,7 +729,7 @@
             "slot": "1",
             "type": "t_array(t_address_payable)dyn_storage",
             "contract": "Lottery",
-            "src": "contracts\\Lottery.sol:8"
+            "src": "contracts/Lottery.sol:8"
           },
           {
             "label": "totalParticipantContributions",
@@ -732,7 +737,7 @@
             "slot": "2",
             "type": "t_mapping(t_address,t_uint256)",
             "contract": "Lottery",
-            "src": "contracts\\Lottery.sol:9"
+            "src": "contracts/Lottery.sol:9"
           },
           {
             "label": "currentParticipantContributions",
@@ -740,7 +745,7 @@
             "slot": "3",
             "type": "t_mapping(t_address,t_uint256)",
             "contract": "Lottery",
-            "src": "contracts\\Lottery.sol:10"
+            "src": "contracts/Lottery.sol:10"
           },
           {
             "label": "participationFee",
@@ -748,7 +753,7 @@
             "slot": "4",
             "type": "t_uint256",
             "contract": "Lottery",
-            "src": "contracts\\Lottery.sol:11"
+            "src": "contracts/Lottery.sol:11"
           }
         ],
         "types": {
@@ -756,7 +761,7 @@
             "label": "bool",
             "numberOfBytes": "1"
           },
-          "t_struct(InitializableStorage)10_storage": {
+          "t_struct(InitializableStorage)23_storage": {
             "label": "struct Initializable.InitializableStorage",
             "members": [
               {
@@ -805,7 +810,7 @@
               "contract": "Initializable",
               "label": "_initialized",
               "type": "t_uint64",
-              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:69",
               "offset": 0,
               "slot": "0"
             },
@@ -813,7 +818,7 @@
               "contract": "Initializable",
               "label": "_initializing",
               "type": "t_bool",
-              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:73",
               "offset": 8,
               "slot": "0"
             }
